@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auth Test</title>
+</head>
+<body>
+
+    <h2>Register</h2>
+    <input id="reg_user" placeholder="Username">
+    <input id="reg_pass" type="password" placeholder="Password">
+    <button onclick="register()">Register</button>
+
+    <h2>Login</h2>
+    <input id="log_user" placeholder="Username">
+    <input id="log_pass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+
+    <h2>Actions</h2>
+    <button onclick="dashboard()">Go to Dashboard</button>
+    <button onclick="logout()">Logout</button>
+
+    <h3 id="output"></h3>
+
+<script>
+
+async function register() {
+    const res = await fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            username: document.getElementById("reg_user").value,
+            password: document.getElementById("reg_pass").value
+        })
+    });
+
+    const data = await res.json();
+    document.getElementById("output").innerText = data.message;
+}
+
+async function login() {
+    const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            username: document.getElementById("log_user").value,
+            password: document.getElementById("log_pass").value
+        })
+    });
+
+    const data = await res.json();
+    document.getElementById("output").innerText = data.message;
+}
+
+async function dashboard() {
+    const res = await fetch("/dashboard", {
+        method: "GET",
+        credentials: "include"   // IMPORTANT for cookies
+    });
+
+    const data = await res.json();
+    document.getElementById("output").innerText = data.message;
+}
+
+async function logout() {
+    const res = await fetch("/logout", {
+        method: "POST",
+        credentials: "include"  // IMPORTANT
+    });
+
+    const data = await res.json();
+    document.getElementById("output").innerText = data.message;
+}
+
+</script>
+
+</body>
+</html>
